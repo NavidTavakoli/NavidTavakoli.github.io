@@ -821,7 +821,13 @@
 				<textarea name="message" rows="7" class="form-control" placeholder="Message" required></textarea>
 			  </div>
 			  <div class="form-group">
-				<button type="submit" class="btn btn-primary py-3 px-5">Send Message</button>
+				<button type="submit"
+						formmethod="POST"
+						formaction="https://formsubmit.co/el/xusudi"
+						formtarget="_blank"
+						class="btn btn-primary py-3 px-5">
+				  Send Message
+				</button>
 			  </div>
 			</form>
 
@@ -933,13 +939,27 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const q = new URLSearchParams(location.search);
-  if (q.get('sent') === '1') {
-    alert('✅ Your message has been sent. Thank you!');
-    history.replaceState({}, '', location.pathname);
-  }
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+
+  // مطمئن شو اکشن درست ست شده
+  form.action = 'https://formsubmit.co/el/xusudi';
+
+  // خنثی کردن لیسنرهای submit دیگر که preventDefault می‌کنند
+  form.addEventListener('submit', function (e) {
+    // جلوی بقیه لیسنرها را بگیر ولی خودت preventDefault نکن
+    e.stopImmediatePropagation();
+
+    // اگر نمی‌خوای تب جدید باز بشه، مطمئن شو خصوصیت target پاکه
+    // form.removeAttribute('target');
+
+    // ارسال بومی (native) را اجبار کن
+    // (برخی قالب‌ها return false می‌کنند؛ با این خط مطمئن می‌شیم ارسال انجام شود)
+    setTimeout(() => HTMLFormElement.prototype.submit.call(form), 0);
+  }, true);
 });
 </script>
+
 
 </body>
 </html>
