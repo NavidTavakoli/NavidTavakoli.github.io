@@ -1,21 +1,48 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Form Test</title></head>
-<body>
-  <h3>FormSubmit basic test</h3>
-  <form action="https://formsubmit.co/el/xusudi" method="POST" target="_blank">
-    <!-- honeypot -->
+<div class="container">
+  <h1>Contact</h1>
+
+  <!-- حالت توصیه‌شده با توکن خودت -->
+  <form action="https://formsubmit.co/el/xusudi" method="POST">
+    <!-- honeypot ضداسپم (خالی بماند) -->
     <input type="text" name="_honey" style="display:none">
-    <!-- redirect بعد از موفقیت (فقط جهت تست) -->
-    <input type="hidden" name="_next" value="https://navidtavakoli.github.io/thanks.html">
-    <input type="hidden" name="_subject" value="Test from contact-test.html">
+
+    <!-- تنظیمات ایمیل -->
+    <input type="hidden" name="_subject" value="New message from portfolio contact form">
     <input type="hidden" name="_template" value="table">
 
-    <p><input type="text"   name="name"    placeholder="Name" required></p>
-    <p><input type="email"  name="email"   placeholder="Email" required></p>
-    <p><input type="text"   name="subject" placeholder="Subject" required></p>
-    <p><textarea name="message" rows="4" placeholder="Message" required></textarea></p>
-    <p><button type="submit">Send</button></p>
+    <!-- بعد از ارسال، به هوم با ?sent=1 برگرد تا پیام موفقیت نشان دهی -->
+    <input type="hidden" name="_next" value="https://navidtavakoli.github.io/?sent=1">
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col">
+          <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+        </div>
+        <div class="col">
+          <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+    </div>
+
+    <div class="form-group">
+      <textarea name="message" class="form-control" rows="10" placeholder="Your Message" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-lg btn-dark btn-block">Submit Form</button>
   </form>
-</body>
-</html>
+</div>
+
+<!-- پیام موفقیت ساده روی هوم وقتی ?sent=1 -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  if (params.get('sent') === '1') {
+    alert('✅ Your message has been sent. Thank you!');
+    history.replaceState({}, '', location.pathname); // پاک‌کردن ?sent=1
+  }
+});
+</script>
