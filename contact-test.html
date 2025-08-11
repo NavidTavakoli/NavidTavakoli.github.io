@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Form Test</title></head>
+<body>
+  <h3>FormSubmit basic test</h3>
+  <form action="https://formsubmit.co/el/xusudi" method="POST" target="_blank">
+    <!-- honeypot -->
+    <input type="text" name="_honey" style="display:none">
+    <!-- redirect بعد از موفقیت (فقط جهت تست) -->
+    <input type="hidden" name="_next" value="https://navidtavakoli.github.io/thanks.html">
+    <input type="hidden" name="_subject" value="Test from contact-test.html">
+    <input type="hidden" name="_template" value="table">
+
+    <p><input type="text"   name="name"    placeholder="Name" required></p>
+    <p><input type="email"  name="email"   placeholder="Email" required></p>
+    <p><input type="text"   name="subject" placeholder="Subject" required></p>
+    <p><textarea name="message" rows="4" placeholder="Message" required></textarea></p>
+    <p><button type="submit">Send</button></p>
+  </form>
+</body>
+</html>
