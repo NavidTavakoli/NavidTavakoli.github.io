@@ -1,15 +1,25 @@
 <!doctype html>
 <html>
-<head><meta charset="utf-8"><title>FormSubmit – Confirm Test</title></head>
+<head><meta charset="utf-8"><title>FormSubmit Final Test</title></head>
 <body>
-  <h3>Confirm Email Test</h3>
-  <form action="https://formsubmit.co/navid.tavakoli.sh@gmail.com" method="POST" target="_blank">
-    <!-- به‌جای YOUR_EMAIL_HERE ایمیل واقعی خودت را بگذار -->
-    <p><input type="text"   name="name"    value="Test" required></p>
-    <p><input type="email"  name="email"   value="test@example.com" required></p>
-    <p><input type="text"   name="subject" value="Confirm Test" required></p>
-    <p><textarea name="message" rows="4"   required>Test message</textarea></p>
+  <h3>FormSubmit final check</h3>
+
+  <form action="https://formsubmit.co/el/xusudi" method="POST" target="_blank">
+    <!-- honeypot: مطمئن شو خالی می‌مونه -->
+    <input type="text" name="_honey" style="display:none" autocomplete="off" tabindex="-1" aria-hidden="true">
+
+    <!-- تنظیمات اختیاری ایمیل -->
+    <input type="hidden" name="_subject" value="Portfolio contact (final test)">
+    <input type="hidden" name="_template" value="table">
+    <!-- توجه: عمداً _next نمی‌گذاریم -->
+
+    <p><input type="text"   name="name"    placeholder="Your Name"   required></p>
+    <p><input type="email"  name="email"   placeholder="Your Email"  required></p>
+    <p><input type="text"   name="subject" placeholder="Subject"     required></p>
+    <p><textarea name="message" rows="4"   placeholder="Message"     required></textarea></p>
     <p><button type="submit">Send</button></p>
   </form>
+
+  <p>این فرم باید بعد از ارسال، در یک تب جدید صفحهٔ نتیجهٔ FormSubmit را نشان بدهد (موفق/خطا). اگر تب جدید باز نشد یا فوراً به صفحهٔ دیگری رفت، یعنی جاوااسکریپت/قالب جلوی submit را می‌گیرد.</p>
 </body>
 </html>
