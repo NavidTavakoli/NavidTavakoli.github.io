@@ -302,7 +302,7 @@
 					<div class="col-md-4 text-center d-flex ftco-animate">
 						<a href="#" class="services-1">
 							<span class="icon">
-								<img src="images/One-click.png" alt="Your Image" style="width: 60px; height: 60px; object-fit: contain;">
+								<img src="images/One-Click.png" alt="Your Image" style="width: 60px; height: 60px; object-fit: contain;">
 							</span>
 							<div class="desc">
 								<h3 class="mb-5">LCA Construction Bootcamp</h3>
@@ -855,34 +855,32 @@
 		const t = btn.textContent;
 		btn.textContent = 'Sending...';
 
-		// payload به فرم JSON (مطابق داکیومنت رسمی)
-		const payload = {
-		  name: form.elements.name.value,
-		  email: form.elements.email.value,
-		  subject: form.elements.subject.value,
-		  message: form.elements.message.value,
-		  _subject:  'New message from portfolio contact form',
-		  _template: 'table'
-		};
+		// از FormData استفاده می‌کنیم تا CORS ساده بماند (بدون Content-Type سفارشی)
+		const fd = new FormData(form);
+		// اختیاری‌ها:
+		fd.set('_subject', 'New message from portfolio contact form');
+		fd.set('_template', 'table');
 
 		try {
 		  const res = await fetch('https://formsubmit.co/ajax/el/xusudi', {
 			method: 'POST',
-			headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
-			body: JSON.stringify(payload)
+			body: fd,
+			headers: { 'Accept': 'application/json' } // Content-Type رو نذار
 		  });
 
-		  const data = await res.json().catch(()=> ({}));
+		  // تلاش برای خواندن پاسخ
+		  let data = null;
+		  try { data = await res.json(); } catch (_) {}
 
-		  if (res.ok && (data.success === true || data.success === 'true')) {
+		  if (res.ok && data && (data.success === true || data.success === 'true')) {
 			ok.classList.remove('d-none');
 			form.reset();
 		  } else {
-			const msg = data?.message || 'Error sending message. Please try again.';
+			const msg = (data && data.message) ? data.message : 'Error sending message. Please try again.';
 			err.textContent = '❌ ' + msg;
 			err.classList.remove('d-none');
 		  }
-		} catch {
+		} catch (_) {
 		  err.textContent = '❌ Network error. Please try again.';
 		  err.classList.remove('d-none');
 		} finally {
@@ -892,6 +890,7 @@
 	  });
 	});
 	</script>
+
 
 
 
