@@ -302,7 +302,7 @@
 					<div class="col-md-4 text-center d-flex ftco-animate">
 						<a href="#" class="services-1">
 							<span class="icon">
-								<img src="images/One-Click.png" alt="Your Image" style="width: 60px; height: 60px; object-fit: contain;">
+								<img src="images/One-click.png" alt="Your Image" style="width: 60px; height: 60px; object-fit: contain;">
 							</span>
 							<div class="desc">
 								<h3 class="mb-5">LCA Construction Bootcamp</h3>
@@ -846,18 +846,16 @@
 	  const err = document.getElementById('formError');
 	  const btn = document.getElementById('submitBtn');
 
+	  if (!form) return;
+
 	  form.addEventListener('submit', async (e) => {
 		e.preventDefault();
-		ok.classList.add('d-none');
-		err.classList.add('d-none');
+		ok?.classList.add('d-none');
+		err?.classList.add('d-none');
 
-		btn.disabled = true;
-		const t = btn.textContent;
-		btn.textContent = 'Sending...';
+		btn && (btn.disabled = true, btn.dataset.t = btn.textContent, btn.textContent = 'Sending...');
 
-		// از FormData استفاده می‌کنیم تا CORS ساده بماند (بدون Content-Type سفارشی)
 		const fd = new FormData(form);
-		// اختیاری‌ها:
 		fd.set('_subject', 'New message from portfolio contact form');
 		fd.set('_template', 'table');
 
@@ -865,31 +863,28 @@
 		  const res = await fetch('https://formsubmit.co/ajax/el/xusudi', {
 			method: 'POST',
 			body: fd,
-			headers: { 'Accept': 'application/json' } // Content-Type رو نذار
+			headers: { 'Accept': 'application/json' } // Content-Type نذار
 		  });
 
-		  // تلاش برای خواندن پاسخ
 		  let data = null;
-		  try { data = await res.json(); } catch (_) {}
+		  try { data = await res.json(); } catch(_) {}
 
 		  if (res.ok && data && (data.success === true || data.success === 'true')) {
-			ok.classList.remove('d-none');
+			ok?.classList.remove('d-none');
 			form.reset();
 		  } else {
 			const msg = (data && data.message) ? data.message : 'Error sending message. Please try again.';
-			err.textContent = '❌ ' + msg;
-			err.classList.remove('d-none');
+			if (err) { err.textContent = '❌ ' + msg; err.classList.remove('d-none'); }
 		  }
 		} catch (_) {
-		  err.textContent = '❌ Network error. Please try again.';
-		  err.classList.remove('d-none');
+		  if (err) { err.textContent = '❌ Network error. Please try again.'; err.classList.remove('d-none'); }
 		} finally {
-		  btn.disabled = false;
-		  btn.textContent = t;
+		  if (btn) { btn.disabled = false; btn.textContent = btn.dataset.t || 'Send Message'; }
 		}
 	  });
 	});
 	</script>
+
 
 
 
