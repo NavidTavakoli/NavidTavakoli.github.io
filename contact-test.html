@@ -1,48 +1,15 @@
-<div class="container">
-  <h1>Contact</h1>
-
-  <!-- حالت توصیه‌شده با توکن خودت -->
-  <form action="https://formsubmit.co/el/xusudi" method="POST">
-    <!-- honeypot ضداسپم (خالی بماند) -->
-    <input type="text" name="_honey" style="display:none">
-
-    <!-- تنظیمات ایمیل -->
-    <input type="hidden" name="_subject" value="New message from portfolio contact form">
-    <input type="hidden" name="_template" value="table">
-
-    <!-- بعد از ارسال، به هوم با ?sent=1 برگرد تا پیام موفقیت نشان دهی -->
-    <input type="hidden" name="_next" value="https://navidtavakoli.github.io/?sent=1">
-
-    <div class="form-group">
-      <div class="form-row">
-        <div class="col">
-          <input type="text" name="name" class="form-control" placeholder="Full Name" required>
-        </div>
-        <div class="col">
-          <input type="email" name="email" class="form-control" placeholder="Email Address" required>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <input type="text" name="subject" class="form-control" placeholder="Subject" required>
-    </div>
-
-    <div class="form-group">
-      <textarea name="message" class="form-control" rows="10" placeholder="Your Message" required></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-lg btn-dark btn-block">Submit Form</button>
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>FormSubmit – Confirm Test</title></head>
+<body>
+  <h3>Confirm Email Test</h3>
+  <form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST" target="_blank">
+    <!-- به‌جای YOUR_EMAIL_HERE ایمیل واقعی خودت را بگذار -->
+    <p><input type="text"   name="name"    value="Test" required></p>
+    <p><input type="email"  name="email"   value="test@example.com" required></p>
+    <p><input type="text"   name="subject" value="Confirm Test" required></p>
+    <p><textarea name="message" rows="4"   required>Test message</textarea></p>
+    <p><button type="submit">Send</button></p>
   </form>
-</div>
-
-<!-- پیام موفقیت ساده روی هوم وقتی ?sent=1 -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(location.search);
-  if (params.get('sent') === '1') {
-    alert('✅ Your message has been sent. Thank you!');
-    history.replaceState({}, '', location.pathname); // پاک‌کردن ?sent=1
-  }
-});
-</script>
+</body>
+</html>
