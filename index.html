@@ -797,7 +797,7 @@
 		<div class="row no-gutters block-9">
 		  <div class="col-md-6 order-md-last d-flex">
 			<!-- AJAX form for GitHub Pages (HTTPS) -->
-			<form action="https://formsubmit.co/el/xusudi" method="POST" class="bg-light p-4 p-md-5 contact-form">
+			<form id="contactForm" action="https://formsubmit.co/el/xusudi" method="POST" class="bg-light p-4 p-md-5 contact-form">
 			  <!-- honeypot (خالی بماند) -->
 			  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
@@ -929,6 +929,22 @@
   <script src="js/scrollax.min.js"></script>
   
   <script src="js/main.js"></script>
+  
+  <script>
+	document.addEventListener('DOMContentLoaded', () => {
+	  const form = document.getElementById('contactForm');
+	  if (!form) return;
+
+	  // اکشن رو مطمئن می‌کنیم درست باشه
+	  form.setAttribute('action', 'https://formsubmit.co/el/xusudi');
+
+	  // جلوگیری از اجرا شدن اسکریپت قالب که جلوی ارسال رو می‌گیره
+	  form.addEventListener('submit', function (e) {
+		e.stopImmediatePropagation(); // فقط جلوگیری از لیسنرهای دیگه
+	  }, true);
+	});
+  </script>
+
     
   </body>
 
