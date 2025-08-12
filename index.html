@@ -786,62 +786,98 @@
 
 	<section class="ftco-section contact-section ftco-no-pb" id="contact-section">
 	  <div class="container">
-		<div class="row justify-content-center mb-5 pb-3">
-		  <div class="col-md-7 heading-section text-center ftco-animate">
-			<h1 class="big big-2">Contact</h1>
-			<h2 class="mb-4">Contact Me</h2>
-			<p></p>
-		  </div>
-		</div>
-
-		<div class="row no-gutters block-9">
-		  <div class="col-md-6 order-md-last d-flex">
-			<!-- AJAX form for GitHub Pages (HTTPS) -->
-			<form id="contactForm" action="https://formsubmit.co/ajax/el/xusudi" method="POST" class="bg-light p-4 p-md-5">
-			  <!-- honeypot (خالی بماند) -->
-			  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-
-			  <!-- فیلدها -->
-			  <div class="form-group">
-				<input type="text"   name="name"    class="form-control" placeholder="Your Name" required>
-			  </div>
-			  <div class="form-group">
-				<input type="email"  name="email"   class="form-control" placeholder="Your Email" required>
-			  </div>
-			  <div class="form-group">
-				<input type="text"   name="subject" class="form-control" placeholder="Subject" required>
-			  </div>
-			  <div class="form-group">
-				<textarea name="message" rows="7"   class="form-control" placeholder="Message" required></textarea>
-			  </div>
-			  <div class="form-group">
-				<button id="submitBtn" type="submit" class="btn btn-primary py-3 px-5">Send Message</button>
-			  </div>
-
-			  <!-- پیام‌ها -->
-			  <div id="formSuccess" class="alert alert-success d-none mt-3">✅ Your message has been sent. Thank you!</div>
-			  <div id="formError"   class="alert alert-danger  d-none mt-3">❌ Error sending message. Please try again.</div>
-			</form>
-
-
-
-
-		  </div>
-
-		  <div class="col-md-6 d-flex">
-			<div class="img" style="background-image: url(images/about.png);"></div>
-		  </div>
-		</div>
+	    <div class="row justify-content-center mb-5 pb-3">
+	      <div class="col-md-7 heading-section text-center ftco-animate">
+	        <h1 class="big big-2">Contact</h1>
+	        <h2 class="mb-4">Contact Me</h2>
+	        <p></p>
+	      </div>
+	    </div>
+	
+	    <div class="row no-gutters block-9">
+	      <div class="col-md-6 order-md-last d-flex">
+	        
+	        <!-- فرم -->
+	        <form id="contactForm" class="bg-light p-4 p-md-5">
+	          <input type="text" name="_honey" style="display:none">
+	          <div class="form-group">
+	            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+	          </div>
+	          <div class="form-group">
+	            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+	          </div>
+	          <div class="form-group">
+	            <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+	          </div>
+	          <div class="form-group">
+	            <textarea name="message" rows="7" class="form-control" placeholder="Message" required></textarea>
+	          </div>
+	          <div class="form-group">
+	            <button id="submitBtn" type="submit" class="btn btn-primary py-3 px-5">Send Message</button>
+	          </div>
+	
+	          <!-- پیام‌ها -->
+	          <div id="formSuccess" class="alert alert-success d-none mt-3">✅ Your message has been sent. Thank you!</div>
+	          <div id="formError" class="alert alert-danger d-none mt-3">❌ Error sending message. Please try again.</div>
+	        </form>
+	
+	      </div>
+	
+	      <div class="col-md-6 d-flex">
+	        <div class="img" style="background-image: url(images/about.png);"></div>
+	      </div>
+	    </div>
 	  </div>
 	</section>
-
+	
 	<script>
 	document.addEventListener('DOMContentLoaded', () => {
-	  const q = new URLSearchParams(location.search);
-	  if (q.get('sent') === '1') {
-		alert('✅ Your message has been sent. Thank you!');
-		history.replaceState({}, '', location.pathname);
-	  }
+	  // اینجا ایمیل تایید شده خودت رو بگذار
+	  const ENDPOINT = 'https://formsubmit.co/ajax/youremail@gmail.com';
+	
+	  const form = document.getElementById('contactForm');
+	  const ok   = document.getElementById('formSuccess');
+	  const err  = document.getElementById('formError');
+	  const btn  = document.getElementById('submitBtn');
+	
+	  form.addEventListener('submit', async (e) => {
+	    e.preventDefault();
+	
+	    ok.classList.add('d-none');
+	    err.classList.add('d-none');
+	
+	    btn.disabled = true;
+	    btn.dataset.t = btn.textContent;
+	    btn.textContent = 'Sending...';
+	
+	    const fd = new FormData(form);
+	    fd.set('_subject','New message from portfolio contact form');
+	    fd.set('_template','table');
+	
+	    try {
+	      const res = await fetch(ENDPOINT, {
+	        method: 'POST',
+	        body: fd,
+	        headers: { 'Accept': 'application/json' }
+	      });
+	
+	      const data = await res.json();
+	
+	      if (res.ok && data.success) {
+	        ok.classList.remove('d-none');
+	        form.reset();
+	      } else {
+	        err.textContent = '❌ ' + (data.message || 'Error sending message. Please try again.');
+	        err.classList.remove('d-none');
+	      }
+	    } catch {
+	      err.textContent = '❌ Network error. Please try again.';
+	      err.classList.remove('d-none');
+	    } finally {
+	      btn.disabled = false;
+	      btn.textContent = btn.dataset.t || 'Send Message';
+	    }
+	  });
 	});
 	</script>
 
@@ -932,61 +968,6 @@
 
 <script src="js/main.js"></script>
 
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('contactForm');
-  const ok   = document.getElementById('formSuccess');
-  const err  = document.getElementById('formError');
-  const btn  = document.getElementById('submitBtn');
-
-  if (!form) return;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    ok?.classList.add('d-none');
-    err?.classList.add('d-none');
-
-    btn && (btn.disabled = true, btn.dataset.t = btn.textContent, btn.textContent = 'Sending...');
-
-    const fd = new FormData(form);
-    fd.set('_subject',  'New message from portfolio contact form');
-    fd.set('_template', 'table');
-
-    try {
-      const res = await fetch('https://formsubmit.co/ajax/el/xusudi', {
-        method: 'POST',
-        body: fd,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      // سعی کن JSON بخونی؛ اگر نشد متن خام رو نشون بده
-      let bodyText = '';
-      let data = null;
-      try {
-        data = await res.json();
-      } catch {
-        bodyText = await res.text();
-      }
-
-      if (res.ok && (data?.success === true || data?.success === 'true')) {
-        ok?.classList.remove('d-none');
-        form.reset();
-      } else {
-        const msg = data?.message || bodyText || 'Unknown error';
-        if (err) { err.textContent = `❌ [${res.status}] ${msg}`; err.classList.remove('d-none'); }
-      }
-    } catch {
-      if (err) { err.textContent = '❌ Network error. Please try again.'; err.classList.remove('d-none'); }
-    } finally {
-      if (btn) { btn.disabled = false; btn.textContent = btn.dataset.t || 'Send Message'; }
-    }
-  }, true);
-});
-</script>
 
 </body>
 </html>
