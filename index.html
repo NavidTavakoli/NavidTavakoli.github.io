@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FGY0D48HWD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FGY0D48HWD');
+    </script>
+
     <title>Navid Tavakoli - Environmental Data Specialist </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,6 +31,7 @@
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
   </head>
+
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 	  
 	  
@@ -967,6 +977,40 @@
 <script src="js/scrollax.min.js"></script>
 
 <script src="js/main.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // همه لینک‌هایی که به PDF رزومه می‌روند یا attribute دانلود دارند
+    const downloadLinks = Array.from(
+      document.querySelectorAll('a[download], a[href*="/releases/download/"]')
+    );
+
+    downloadLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const section = link.closest('section');
+        const sectionId = section ? section.id || '' : '';
+
+        const url = link.href || '';
+        const fileName =
+          link.getAttribute('download') ||
+          (url.split('/').pop() || '').split('?')[0] ||
+          '';
+
+        // ارسال رویداد به GA4
+        gtag('event', 'file_download', {
+          file_name: fileName,
+          file_url: url,
+          link_text: (link.textContent || '').trim(),
+          section_id: sectionId,
+          outbound: true,
+          event_category: 'engagement',
+          event_label: fileName
+        });
+      }, { passive: true });
+    });
+  });
+</script>
+
 
 
 </body>
