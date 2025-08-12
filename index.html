@@ -797,16 +797,32 @@
 		<div class="row no-gutters block-9">
 		  <div class="col-md-6 order-md-last d-flex">
 			<!-- AJAX form for GitHub Pages (HTTPS) -->
-			<form action="https://formsubmit.co/el/xusudi" method="POST" id="contactForm" class="bg-light p-4 p-md-5">
+			<form action="https://formsubmit.co/el/xusudi" method="POST" id="contactForm" class="bg-light p-4 p-md-5" target="_blank">
+			  <!-- honeypot (خالی بماند) -->
 			  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+			  <!-- تنظیمات ایمیل -->
 			  <input type="hidden" name="_subject" value="New message from portfolio contact form">
 			  <input type="hidden" name="_template" value="table">
+			  <!-- بعد از ارسال برگرد به هوم با ?sent=1 -->
 			  <input type="hidden" name="_next" value="https://navidtavakoli.github.io/?sent=1">
 
-			  <!-- name / email / subject / message inputs ... -->
-
-			  <button type="submit" class="btn btn-primary py-3 px-5">Send Message</button>
+			  <div class="form-group">
+				<input type="text"   name="name"    class="form-control" placeholder="Your Name" required>
+			  </div>
+			  <div class="form-group">
+				<input type="email"  name="email"   class="form-control" placeholder="Your Email" required>
+			  </div>
+			  <div class="form-group">
+				<input type="text"   name="subject" class="form-control" placeholder="Subject" required>
+			  </div>
+			  <div class="form-group">
+				<textarea name="message" rows="7"   class="form-control" placeholder="Message" required></textarea>
+			  </div>
+			  <div class="form-group">
+				<button type="submit" class="btn btn-primary py-3 px-5">Send Message</button>
+			  </div>
 			</form>
+
 
 
 		  </div>
@@ -820,14 +836,14 @@
 
 	<script>
 	document.addEventListener('DOMContentLoaded', () => {
-	  const params = new URLSearchParams(location.search);
-	  if (params.get('sent') === '1') {
-		// اینجا به‌جای alert می‌تونی یک باکس خوشگل هم بسازی
+	  const q = new URLSearchParams(location.search);
+	  if (q.get('sent') === '1') {
 		alert('✅ Your message has been sent. Thank you!');
-		history.replaceState({}, '', location.pathname); // پاک کردن ?sent=1
+		history.replaceState({}, '', location.pathname);
 	  }
 	});
 	</script>
+
 
 
 
@@ -915,23 +931,6 @@
 
 <script src="js/main.js"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('contactForm');
-  if (!form) return;
-
-  // مطمئن شو اکشن درسته
-  form.action = 'https://formsubmit.co/el/xusudi';
-
-  // فقط جلوی لیسنرهای دیگه که preventDefault می‌کنن رو بگیر.
-  // خودمون manual submit نکنیم تا دوباره‌کاری نشه.
-  form.addEventListener('submit', function (e) {
-    e.stopImmediatePropagation(); // از اجرای هندلرهای دیگر جلوگیری کن
-    // توجه: اینجا عمداً preventDefault() یا submit دستی نمی‌کنیم
-    // تا فقط "یک" ارسال طبیعی انجام بشه.
-  }, true);
-});
-</script>
 
 
 
