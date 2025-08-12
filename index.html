@@ -943,21 +943,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!form) return;
 
-  // جلوی لیسنرهای دیگر (قالب) را می‌گیریم و خودمان submit را هندل می‌کنیم
   form.addEventListener('submit', async (e) => {
-    e.preventDefault();            // نذار صفحه عوض بشه
-    e.stopImmediatePropagation();  // نذار هندلرهای دیگه اجرا بشن
+    e.preventDefault();
+    e.stopImmediatePropagation();
 
-    ok.classList.add('d-none');
-    err.classList.add('d-none');
+    ok?.classList.add('d-none');
+    err?.classList.add('d-none');
 
-    btn.disabled = true;
-    const t = btn.textContent;
-    btn.textContent = 'Sending...';
+    btn && (btn.disabled = true, btn.dataset.t = btn.textContent, btn.textContent = 'Sending...');
 
-    // از FormData استفاده کن تا CORS ساده بمونه (Content-Type ست نکن)
     const fd = new FormData(form);
-    // اختیاری‌ها برای ایمیل تمیزتر:
     fd.set('_subject',  'New message from portfolio contact form');
     fd.set('_template', 'table');
 
@@ -965,28 +960,31 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch('https://formsubmit.co/ajax/el/xusudi', {
         method: 'POST',
         body: fd,
-        headers: { 'Accept': 'application/json' } // فقط Accept
+        headers: { 'Accept': 'application/json' }
       });
 
+      // سعی کن JSON بخونی؛ اگر نشد متن خام رو نشون بده
+      let bodyText = '';
       let data = null;
-      try { data = await res.json(); } catch {}
+      try {
+        data = await res.json();
+      } catch {
+        bodyText = await res.text();
+      }
 
-      if (res.ok && data && (data.success === true || data.success === 'true')) {
-        ok.classList.remove('d-none');
+      if (res.ok && (data?.success === true || data?.success === 'true')) {
+        ok?.classList.remove('d-none');
         form.reset();
       } else {
-        const msg = (data && data.message) ? data.message : 'Error sending message. Please try again.';
-        err.textContent = '❌ ' + msg;
-        err.classList.remove('d-none');
+        const msg = data?.message || bodyText || 'Unknown error';
+        if (err) { err.textContent = `❌ [${res.status}] ${msg}`; err.classList.remove('d-none'); }
       }
     } catch {
-      err.textContent = '❌ Network error. Please try again.';
-      err.classList.remove('d-none');
+      if (err) { err.textContent = '❌ Network error. Please try again.'; err.classList.remove('d-none'); }
     } finally {
-      btn.disabled = false;
-      btn.textContent = t;
+      if (btn) { btn.disabled = false; btn.textContent = btn.dataset.t || 'Send Message'; }
     }
-  }, true); // useCapture=true تا زودتر از بقیه هندلرها اجرا بشه
+  }, true);
 });
 </script>
 
