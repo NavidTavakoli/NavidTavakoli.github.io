@@ -302,7 +302,7 @@
 					<div class="col-md-4 text-center d-flex ftco-animate">
 						<a href="#" class="services-1">
 							<span class="icon">
-								<img src="images/one.png" alt="Your Image" style="width: 60px; height: 60px; object-fit: contain;">
+								<img src="images/One-click.png" alt="Your Image" style="width: 60px; height: 60px; object-fit: contain;">
 							</span>
 							<div class="desc">
 								<h3 class="mb-5">LCA Construction Bootcamp</h3>
@@ -798,38 +798,16 @@
 		  <div class="col-md-6 order-md-last d-flex">
 			<!-- AJAX form for GitHub Pages (HTTPS) -->
 			<form action="https://formsubmit.co/el/xusudi" method="POST" id="contactForm" class="bg-light p-4 p-md-5">
-			  <!-- ضداسپم: خالی بماند -->
 			  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-
-			  <!-- تنظیمات ایمیل -->
 			  <input type="hidden" name="_subject" value="New message from portfolio contact form">
 			  <input type="hidden" name="_template" value="table">
-
-			  <!-- بعد از ارسال برگرد به صفحه اصلی با ?sent=1  -->
 			  <input type="hidden" name="_next" value="https://navidtavakoli.github.io/?sent=1">
 
-			  <div class="form-group">
-				<input type="text" name="name" class="form-control" placeholder="Your Name" required>
-			  </div>
-			  <div class="form-group">
-				<input type="email" name="email" class="form-control" placeholder="Your Email" required>
-			  </div>
-			  <div class="form-group">
-				<input type="text" name="subject" class="form-control" placeholder="Subject" required>
-			  </div>
-			  <div class="form-group">
-				<textarea name="message" rows="7" class="form-control" placeholder="Message" required></textarea>
-			  </div>
-			  <div class="form-group">
-				<button type="submit"
-						formmethod="POST"
-						formaction="https://formsubmit.co/el/xusudi"
-						formtarget="_blank"
-						class="btn btn-primary py-3 px-5">
-				  Send Message
-				</button>
-			  </div>
+			  <!-- name / email / subject / message inputs ... -->
+
+			  <button type="submit" class="btn btn-primary py-3 px-5">Send Message</button>
 			</form>
+
 
 		  </div>
 
@@ -942,23 +920,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
-  // مطمئن شو اکشن درست ست شده
+  // مطمئن شو اکشن درسته
   form.action = 'https://formsubmit.co/el/xusudi';
 
-  // خنثی کردن لیسنرهای submit دیگر که preventDefault می‌کنند
+  // فقط جلوی لیسنرهای دیگه که preventDefault می‌کنن رو بگیر.
+  // خودمون manual submit نکنیم تا دوباره‌کاری نشه.
   form.addEventListener('submit', function (e) {
-    // جلوی بقیه لیسنرها را بگیر ولی خودت preventDefault نکن
-    e.stopImmediatePropagation();
-
-    // اگر نمی‌خوای تب جدید باز بشه، مطمئن شو خصوصیت target پاکه
-    // form.removeAttribute('target');
-
-    // ارسال بومی (native) را اجبار کن
-    // (برخی قالب‌ها return false می‌کنند؛ با این خط مطمئن می‌شیم ارسال انجام شود)
-    setTimeout(() => HTMLFormElement.prototype.submit.call(form), 0);
+    e.stopImmediatePropagation(); // از اجرای هندلرهای دیگر جلوگیری کن
+    // توجه: اینجا عمداً preventDefault() یا submit دستی نمی‌کنیم
+    // تا فقط "یک" ارسال طبیعی انجام بشه.
   }, true);
 });
 </script>
+
 
 
 </body>
