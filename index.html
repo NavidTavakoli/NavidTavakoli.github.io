@@ -30,12 +30,34 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+	<style>
+	 /* اجازه بده ژست عمودی از روی اسلایدر رد بشه؛ افقی رو خود Owl هندل می‌کنه */
+	.home-slider.owl-carousel,
+	.home-slider .owl-stage-outer,
+	.home-slider .owl-stage {
+		 touch-action: auto !important;    /* یا pan-y؛ auto امن‌تره چون اجازه هر دو جهت میده */
+		 -ms-touch-action: auto !important;
+		 -webkit-overflow-scrolling: touch;
+	}
+
+	  /* اطمینان از اسکرول عمودی صفحه */
+	  html, body {
+		touch-action: pan-y !important;
+		overflow-x: hidden !important;
+	  }
+
+	  /* اگر تمپلیت ارتفاع رو قفل کرده، بازش کن */
+	  .js-fullheight {
+		height: auto !important;
+		min-height: 100vh;
+	  }
+	</style>
   </head>
 
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 	  
 	  
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light site-navbar-target" id="ftco-navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light site-navbar-target fixed-top" id="ftco-navbar">
 	    <div class="container">
 	      <a class="navbar-brand" href="index.html">Navid</a>
 	      <button class="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,7 +112,7 @@
 		          		<span class="subheading">Hello!</span>
 			            <h1 class="mb-4 mt-3">I'm an <span>Environmental Data Specialist</span> based in Italy</h1>
 			            <p>
-						  <a href="https://raw.githubusercontent.com/NavidTavakoli/NavidTavakoli.github.io/refs/heads/main/CV.pdf"
+						  <a href="https://github.com/NavidTavakoli/NavidTavakoli.github.io/releases/download/v1.0/CV.pdf"
 							 class="btn btn-primary py-3 px-8"
 							 download="Navid_Resume.pdf">
 							 Download My Resume
@@ -135,7 +157,7 @@
 	                <span>Project complete</span>
                 </p>
                 <p>
-				  <a href="https://raw.githubusercontent.com/NavidTavakoli/NavidTavakoli.github.io/refs/heads/main/CV.pdf"
+				  <a href="https://github.com/NavidTavakoli/NavidTavakoli.github.io/releases/download/v1.0/CV.pdf"
 					 class="btn btn-primary py-3 px-8"
 					 download="Navid_Resume.pdf">
 					 Download My Resume
@@ -193,13 +215,13 @@
 						<div style="display: inline-block; float: right; width: 150px; height: 150px;">
 							<img src="images/Guilan.png" alt="University Icon" style="width:150px; height:150px;">
 						</div>
-    					<h2>BSc Computer Science</h2>
+    					<h2>BSc Pure Mathematics</h2>
     					<span class="position">University of Guilan</span>
 						<p><p>
 						<p><strong>Thesis Title:</strong><p>
 						<p style="font-style: italic; text-decoration: underline;">
-						Discrete Computational Models for Urban Growth: A Data Engineering Perspective.</p>
-    					<p class="mt-4">Built data workflows for preprocessing, transformation, and visualization, gaining solid foundations in data modeling, algorithm design, and computational analysis applicable to data engineering.</p>
+						Mathematical Modeling of Urban Growth Patterns Using Discrete Systems.</p>
+    					<p class="mt-4">Using discrete models and sequence analysis. Applied number theory and combinatorics to simulate population growth and spatial trends, supporting predictive modeling in urban planning.</p>
 								
     				</div>
     			</div>
@@ -960,7 +982,7 @@
   
 
   <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  <svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
 <script src="js/jquery.min.js"></script>
@@ -979,34 +1001,21 @@
 <script src="js/main.js"></script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const downloadLinks = Array.from(
-      document.querySelectorAll('a[download], a[href*="/releases/download/"]')
-    );
-
-    downloadLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        const sectionId = (link.closest('section')?.id) || '';
-        const url = link.href || '';
-        const fileName =
-          link.getAttribute('download') ||
-          (url.split('/').pop() || '').split('?')[0] || '';
-
-        // رویداد سفارشی بدون تداخل با Enhanced Measurement
-        gtag('event', 'resume_download', {
-          file_name: fileName,
-          file_url: url,
-          link_text: (link.textContent || '').trim(),
-          section_id: sectionId,
-          outbound: true
-        });
-      }, { passive: true, once: true });
-    });
-  });
+  // پارالاکس Scrollax را روی دستگاه‌های تاچ خاموش کن
+  (function () {
+    var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouch && window.jQuery && window.jQuery.Scrollax) {
+      try { jQuery.Scrollax().destroy(); } catch (e) {}
+    }
+    if (isTouch) {
+      // اگر قبلاً استایل translateY تزریق شده، خنثی‌اش کن
+      document.querySelectorAll('[data-scrollax]').forEach(function(el){
+        el.style.transform = 'none';
+        el.style.touchAction = 'pan-y';
+      });
+    }
+  })();
 </script>
-
-
-
 
 </body>
 </html>
